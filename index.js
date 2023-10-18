@@ -10,6 +10,8 @@ app.get("/", (req, res) => {
   return res.status(234).send({ message: "welcome" });
 });
 
+// database connection
+
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 
