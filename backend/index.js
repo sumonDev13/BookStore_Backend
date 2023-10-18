@@ -1,13 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { Book } from "./models/book.js";
+import router from "./routes/booksRoute.js";
+import cors from 'cors'
 
 dotenv.config();
 const port = process.env.PORT;
 const app = express();
-app.use(express.json({extended:true}));
-app.use(express.urlencoded({extended:true}));
+app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // api routes
 
@@ -15,31 +17,7 @@ app.get("/", (req, res) => {
   return res.status(234).send({ message: "welcome" });
 });
 
-app.post('/books', async (request, response) => {
-  try {
-    if (
-      !request.body.title ||
-      !request.body.author ||
-      !request.body.publishYear
-    ) {
-      return response.status(400).send({
-        message: 'Send all required fields: title, author, publishYear',
-      });
-    }
-    const newBook = {
-      title: request.body.title,
-      author: request.body.author,
-      publishYear: request.body.publishYear,
-    };
-
-    const book = await Book.create(newBook);
-
-    return response.status(201).send(book);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).send({ message: error.message });
-  }
-});
+app.use('/books',router);
 
 // database connection
 
