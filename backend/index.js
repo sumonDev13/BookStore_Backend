@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   return res.status(234).send({ message: "welcome" });
 });
 
-app.post('/', async (request, response) => {
+app.post('/books', async (request, response) => {
   try {
     if (
       !request.body.title ||
