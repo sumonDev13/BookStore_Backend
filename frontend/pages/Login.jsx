@@ -11,9 +11,15 @@ const Login = () => {
     try {
       // Make an API request to authenticate the user
       const response = await axios.post('http://localhost:8000/api/login', { email, password });
-        if(response.status === 200) {
-          navigate('/home')
-        }
+  
+      if (response.data.token) {
+        // Save the token to localStorage
+        const token = response.data.token;
+        sessionStorage.setItem("token", token);
+        // Redirect to the home page or perform any other actions
+        navigate('/home');
+      }
+  
       // Handle successful login, e.g., set user state or redirect
       console.log('Login successful', response.data);
     } catch (error) {

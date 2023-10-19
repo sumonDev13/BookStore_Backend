@@ -31,18 +31,10 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    // Make an API request to log the user out
-    axios
-      .post('http://localhost:8000/api/logout')
-      .then(() => {
-        // Clear any user-related data (e.g., tokens, user state)
-        // Redirect to the login page or perform any other actions
-        navigate('/login');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+     const token = sessionStorage.removeItem("token");
+    console.log('token', token)
+    navigate('/')
+   };
 
   return (
     <div className='p-4'>
