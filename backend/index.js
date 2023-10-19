@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import router from "./routes/booksRoute.js";
 import cors from 'cors'
+import cookieParser from "cookie-parser";
+import authRouter from "./routes/authRoute.js";
 
 dotenv.config();
 const port = process.env.PORT;
@@ -10,6 +12,7 @@ const app = express();
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(cookieParser());
 
 // api routes
 
@@ -18,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/books',router);
+app.use('/api',authRouter)
 
 // database connection
 
