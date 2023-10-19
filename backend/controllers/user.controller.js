@@ -5,29 +5,45 @@ import { validateUserLogin,validateUserSignup } from "../validators/user.validat
 
 export const createUser = async (req, res) => {
     try {
-      const { err } = validateUserSignup(req.body) // Validate the information from the request body
-      if (err) return res.status(400).json({ message: err.message })
-      const userExist = await User.findOne({ email: req.body.email }) // Checking if the user exist
-      if (userExist) return res.status(400).json({ message: 'User exist' })
-      const { name, email, password, role } = req.body
-      const user = await User.create({ name, email, password, role }) //Creating the user
-      if (!user) return res.status(400).json({ message: 'Cannot create user' })
+      const { error } = validateUserSignup(req.body); // Validate the information from the request body
   
-      const token = await user.jwtToken()
-  
-      const options = {
-        expiresIn: 3000,
-        httpOnly: true,
+      if (error) {
+        return res.status(400).json({ message: error.message });
       }
   
-      return res.status(200).cookies('token', token, options).json({
+      const { name, email, password, role } = req.body;
+  
+      // Check if the user already exists
+      const userExist = await User.findOne({ email });
+      if (userExist) {
+        return res.status(400).json({ message: 'User already exists' });
+      }
+  
+      // Create a new user
+      const user = await User.create({ name, email, password, role });
+  
+      if (!user) {
+        return res.status(400).json({ message: 'Cannot create user' });
+      }
+  
+    //   const token = await user.generateJwtToken(); // Assuming you have a method for generating a JWT token
+  
+    //   const options = {
+    //     maxAge: 300000, // 300 seconds (5 minutes)
+    //     httpOnly: true,
+    //   };
+  
+    //   res.cookie('token', token, options);
+      
+      return res.status(200).json({
         message: 'Signup successful',
-        token,
-      })
+        
+      });
     } catch (error) {
-      console.log('Unable to create a User')
+      console.error('Unable to create a User', error);
+      return res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
   
   export const loginUser = async (req, res) => {
     try {
