@@ -25,7 +25,7 @@ const CreateBooks = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
-        navigate('/');
+        navigate('/home');
       })
       .catch((error) => {
         setLoading(false);
