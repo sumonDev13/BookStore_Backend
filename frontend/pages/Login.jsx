@@ -2,7 +2,7 @@ import  { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -16,8 +16,9 @@ const Login = () => {
         // Save the token to localStorage
         const token = response.data.token;
         sessionStorage.setItem("token", token);
+        setToken(token);
         // Redirect to the home page or perform any other actions
-        navigate('/home');
+        navigate('/home', { state: { token } });
       }
   
       // Handle successful login, e.g., set user state or redirect

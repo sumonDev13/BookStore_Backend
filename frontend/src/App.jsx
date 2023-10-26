@@ -6,13 +6,15 @@ import EditBook from '../pages/EditBook';
 import DeleteBook from '../pages/DeleteBook';
 import Login from '../pages/Login';
 import Signup from '../pages/SignUp';
+import { useState } from 'react';
 
 const App = () => {
+  const [token, setToken] = useState(null);
   return (
     <Routes>
-      <Route path='/' element={<Login />} />
+      <Route path='/' element={<Login setToken={setToken} />} />
       <Route path='/signup' element={<Signup />} />
-      <Route path='/home' element={<Home />} />
+      <Route path='/home' element={<Home  token={token}/>} />
       <Route path='/books/create' element={<CreateBook />} />
       <Route path='/books/details/:id' element={<ShowBook />} />
       <Route path='/books/edit/:id' element={<EditBook />} />
